@@ -1,0 +1,284 @@
+import mysql.connector
+from mysql.connector import Error
+
+try: 
+    con = mysql.connector.connect(host='localhost', database='db_shopping', user='root', password='admin')
+except Error as erro:
+    print("Erro", erro)
+
+#função que cadastra clientes
+def cliente_Cadastro():
+    print("BEM VINDO!\nCRIE SEU CADASTRO")
+    CPF = input("CPF:")
+    Nome = input("Nome:")
+    Email = input("Email:")
+    Sexo = input("Sexo:")
+    Endereco = input("Endereco:")
+
+    insere_Cliente= "INSERT INTO Cliente(CPF , NOME, EMAIL, SEXO, ENDERECO)VALUES('"+CPF + "', '" + Nome + "','" + Email + "','" + Sexo + "','" + Endereco+"')"
+
+    cursor = con.cursor()  
+
+    cursor.execute(insere_Cliente)
+
+    con.commit()
+
+def imprimir_tabela(vizualizar):
+    cursor = con.cursor()  
+
+    cursor.execute(vizualizar)
+    linhas = cursor.fetchall()
+    print("---  CADASTRO  ---")
+    for linha in linhas:
+        print(linha)
+
+def imprimir_function(vizualizar):
+    cursor = con.cursor()  
+
+    cursor.execute(vizualizar)
+    linhas = cursor.fetchall()
+    print("---  CADASTRO  ---")
+    for linha in linhas:
+        print(linha)
+
+def imprimir_procedure(vizualizar):
+    cursor = con.cursor()  
+
+    cursor.execute(vizualizar)
+    linhas = cursor.fetchall()
+    print("---  PROCEDURE  ---")
+    for linha in linhas:
+        print(linha)
+
+def imprimir_Tabelas():
+    opcao = 0
+    while opcao != 11:
+        print("\nSeja Bem Vindo\nSelecione o que deseja fazer:")
+        print(
+        '''
+        01 - Imprimir cliente
+        02 - Imprimir loja_roupa
+        03 - Imprimir roupa
+        04 - Imprimir RoupaVenda
+        05 - Imprimir Restaurante
+        06 - Imprimir Cardapio
+        07 - Imprimir Cardapio_Item
+        ''')
+        opcao = int(input('Qual sua opção? '))
+        if opcao == 1:
+            sql_tabelas = "SELECT * FROM clientes"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 2:
+            sql_tabelas= "SELECT * FROM Loja_Roupa"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 3:
+            sql_tabelas= "SELECT * FROM Roupa"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 4:
+            sql_tabelas= "SELECT * FROM RoupaVenda"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 5:
+            sql_tabelas= "SELECT * FROM Restaurante"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 6:
+            sql_tabelas= "SELECT * FROM Cardapio"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 7:
+            sql_tabelas= "SELECT * FROM Cardapio_Item"
+            imprimir_tabela(sql_tabelas)
+        elif opcao == 11: 
+            print("finalizando...")
+        else: 
+            print("Opção Inválida, tente novamente")
+            
+def imprimir(vizualizar):
+    cursor = con.cursor()  
+
+    cursor.execute(vizualizar)
+    linhas = cursor.fetchall()
+    print("---  CADASTRO  ---")
+    for linha in linhas: 
+        print("CPF:", linha[0])
+        print("Nome:", linha[1])
+        print("Email:", linha[2])
+        print("Sexo:", linha[3])
+        print("Endereço:", linha[4], "\n")
+    
+    con.commit()
+#função que vizualiza cadastro do cliente com todos os dados
+def view_Cliente():
+    vizualizar = "SELECT * FROM Vizualiza"
+    imprimir(vizualizar)
+
+def function_Verifica():
+    nome_qualquer = input("Digite um CPF: ")
+    comando_sql2 = "SELECT FN_CLIENTE('"+ nome_qualquer + "') as Resultado"
+    imprimir_function(comando_sql2)  
+
+#função que cadastra lojas
+def loja_Cadastro():
+    print("Cadastre uma Loja de Roupa")
+    CNPJ_LOJA = input("CNPJ: ")
+    Nome = input("Nome: ")
+    Razao_Social = input("Razão Social: ")
+    
+    insere_Loja = "INSERT INTO Loja_Roupa(CNPJ_LOJA, NOME, RAZAO_SOCIAL)VALUES('"+CNPJ_LOJA + "', '" + Nome + "','" + Razao_Social+ "')"
+
+    cursor = con.cursor()  
+
+    cursor.execute(insere_Loja)
+
+    print("Loja cadastrada!")
+
+    con.commit()
+
+def  view_Loja():
+    comando_sql1 = "SELECT * FROM Vizualiza1"
+    cursor11 = con.cursor()  
+
+    cursor11.execute(comando_sql1)
+    linhas2 = cursor11.fetchall()
+    print("--- Nome das lojas com cadastro no sistema ---")
+    for linhas in linhas2:
+        print("CNPJ: ", linhas[0])
+        print("Nome: ", linhas[1])
+        print("Razão Social: ", linhas[2], "\n")
+
+    con.commit()
+
+#função que cadastra itens no cardapio
+def roupa_Cadastro():
+    print("Cadastro de Roupas")
+    ID = input("ID da roupa: ")
+    Descricao = input("Descreva a roupa: ")
+    Estoque = input("Estoque da roupa ")
+    insere_Roupa = "INSERT INTO Roupa(ID, Descricao, Estoque)VALUES('"+ ID  + "', '" +  Descricao + "', '" + Estoque + "')"
+
+    cursor5 = con.cursor()  
+
+    cursor5.execute(insere_Roupa)
+    con.commit()
+
+def roupa_Pedido():
+    print("Digite as informações")
+    Venda = input("Venda: ")
+    Roupa = input("Digite o id da roupa: ")
+    Quantidade= input("Quantidade de Roupa: ")
+    faz_Pedido = "INSERT INTO Roupa(ID, Descricao, Estoque)VALUES('"+ Venda + "', '" +  Roupa + "', '" + Quantidade + "')"
+
+    cursor7 = con.cursor()  
+
+    cursor7.execute(faz_Pedido)
+
+    #imprimir o estoque 
+    con.commit()
+
+def restaurante_Cadastro():
+    print("Cadastro de Restaurante")
+    CNPJ_Restaurante = input("CNPJ do Restaurante: ")
+    Nome = input("Nome do Restaurante: ")
+    Razao_Social = input("CNPJ do Restaurante: ")
+    insere_Restaurante = "INSERT INTO Restaurante(CNPJ_Restaurante, Nome, Razao_Social)VALUES('"+ CNPJ_Restaurante  + "', '" +  Nome + "', '" + Razao_Social + "')"
+
+    cursor5 = con.cursor()  
+
+    cursor5.execute(insere_Restaurante)
+    con.commit()
+
+def item_cadastro():
+    print("Cadastro de item no cardápio")
+    ID_Cardapio = input("ID do Cardapio: ")
+    Descricao = input("Descricao: ")
+    Estoque = input("Estoque:  ")
+    insere_Cardapio = "INSERT INTO Cardapio(ID_Cardapio, Descricao, Estoque)VALUES('"+ ID_Cardapio  + "', '" +  Descricao + "', '" + Estoque + "')"
+
+    cursor5 = con.cursor()  
+
+    cursor5.execute(insere_Cardapio)
+    con.commit()
+
+def item_Pedido():
+    print("Digite as informações")
+    Venda = input("Venda: ")
+    Itens = input("Digite o id do item no cardápio: ")
+    Quantid = input("Quantidade: ")
+    faz_Pedidoitem = "INSERT INTO Cardapio_Item(Venda, Itens, Quantid)VALUES('"+ Venda + "', '" +  Itens + "', '" + Quantid + "')"
+
+    cursor7 = con.cursor()  
+
+    cursor7.execute(faz_Pedidoitem)
+
+    #imprimir o estoque 
+    con.commit()
+
+def procedure_Item():
+    valor = input("Digite a quantidade de itens que deseja ver")
+
+    realiza = "CALL Selecionar_Produtos('"+ valor + "')"
+
+    cursor7 = con.cursor()  
+
+    cursor7.execute(realiza)
+
+    #imprimir o estoque 
+    con.commit()
+
+def menu():
+    opcao = 0
+    while opcao != 12:
+        print("\nSeja Bem Vindo\nSelecione o que deseja fazer:")
+        print(
+        '''
+        01 - Cadastro de Cliente
+        02 - View - Vizualizar clientes cadastrados
+        03 - Function - Verifica se usuário já foi cadastrado
+        04 - Cadastro de Loja de Roupa
+        05 - Vizualizar Lojas de Roupas Cadastradas
+        06 - Cadastro de Roupas
+        07 - Trigger - Fazer Pedido de Roupas e diminui estoque 
+        08 - Cadastrar Restaurante
+        09 - Cadastrar Itens no Cardápio
+        10 - Fazer pedido de item no Cardápio
+        11 - PROCEDURE - Gostaria de verificar quantos itens do cardápio
+        12 - Imprimir Tabelas
+        ''')
+        opcao = int(input('Qual sua opção? '))
+        if opcao == 1:
+            cliente_Cadastro()
+        elif opcao == 2:
+            view_Cliente()
+        elif opcao == 3:
+            function_Verifica()
+        elif opcao == 4:
+            loja_Cadastro()
+        elif opcao == 5:
+            view_Loja()
+        elif opcao == 6:
+            roupa_Cadastro()
+        elif opcao == 7:
+            roupa_Pedido()
+        elif opcao == 8: 
+            restaurante_Cadastro()
+        elif opcao == 9:
+            item_cadastro()
+        elif opcao == 10:
+            item_Pedido()
+        elif opcao == 11:
+            procedure_Item()
+        elif opcao == 12:
+            imprimir_Tabelas()
+        else: 
+            print("Opção Inválida, tente novamente")
+
+    print("Volte sempre!")
+if(__name__ == '__main__'):
+        menu()
+
+
+
+
+
+
+
+
+
